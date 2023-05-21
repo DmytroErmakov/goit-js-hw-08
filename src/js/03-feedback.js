@@ -1,17 +1,17 @@
-import throttle from "lodash.throttle";
+import throttle from 'lodash.throttle';
 
-const LOCAL_KEY = "feedback-form-state";
+const LOCAL_KEY = 'feedback-form-state';
 
 let formData = {};
 
 const refs = {
-  form: document.querySelector(".feedback-form"),
-  input: document.querySelector(".feedback-form  input"),
-  textarea: document.querySelector(".feedback-form textarea"),
+  form: document.querySelector('.feedback-form'),
+  input: document.querySelector('.feedback-form  input'),
+  textarea: document.querySelector('.feedback-form textarea'),
 };
 
-refs.form.addEventListener("input", throttle(onInputData, 500));
-refs.form.addEventListener("submit", onFormSubmit);
+refs.form.addEventListener('input', throttle(onInputData, 500));
+refs.form.addEventListener('submit', onFormSubmit);
 
 populateFeedbackForm();
 
@@ -26,8 +26,12 @@ function onInputData(event) {
 
 function onFormSubmit(event) {
   event.preventDefault();
+const { email, message } = event.currentTarget.elements;
+      if (email.value.trim() === "" || message.value.trim() === "") {
+      alert(`Please fill in all the fields!`);
+      return;
+  }
 
-  const { email, message } = event.currentTarget.elements;
   console.log({ email: email.value.trim(), message: message.value.trim() });
 
   if (localStorage.getItem(LOCAL_KEY)) {
@@ -43,7 +47,6 @@ function populateFeedbackForm() {
   const data = localStorage.getItem(LOCAL_KEY);
   if (!data) return;
   formData = JSON.parse(data);
-  refs.input.value = formData.email ?? "";
-  refs.textarea.value = formData.message ?? "";
+  refs.input.value = formData.email ?? '';
+  refs.textarea.value = formData.message ?? '';
 }
-
